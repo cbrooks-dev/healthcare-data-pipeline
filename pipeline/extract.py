@@ -16,7 +16,8 @@ def extract() -> bool:
         # Load raw data
         engine = connect()
         df.to_sql(name="patient_raw", con=engine, if_exists="replace", index=False)
-    except:
+    except Exception as e:
+        print(e)
         return False
     
     return True
