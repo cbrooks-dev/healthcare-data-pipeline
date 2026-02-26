@@ -1,4 +1,5 @@
-CREATE TABLE Patient (
+-- Schema for raw ingested data
+CREATE TABLE patient (
     name TEXT,
     age INT,
     gender TEXT,
