@@ -13,15 +13,21 @@ DB_HOST = os.getenv("DB_HOST")
 DB_PORT = os.getenv("DB_PORT")
 DB_NAME = os.getenv("DB_NAME")
 
-# Connect to db
-engine = create_engine(f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}")
 
-# Ingest csv data
-path = Path(r"data\raw\healthcare_dataset.csv")
-df = pd.read_csv(filepath_or_buffer=path, sep=",")
+def extract() -> bool:
+    """Extract and load healthcare csv data into a raw Postgres table."""
 
-# Rename columns to match table
-df.columns = [col.lower().replace(" ", "_") for col in df.columns]
+    # Connect to db
+    engine = create_engine(
+        f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    )
 
-# Load raw data
-df.to_sql(name="patient", con=engine, if_exists="replace", index=False)
+    # Ingest csv data
+    path = Path(r"data\raw\healthcare_dataset.csv")
+    df = pd.read_csv(filepath_or_buffer=path, sep=",")
+
+    # Rename columns to match table
+    df.columns = [col.lower().replace(" ", "_") for col in df.columns]
+
+    # Load raw data
+    df.to_sql(name="patient", con=engine, if_exists="replace", index=False)
