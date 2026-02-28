@@ -29,19 +29,14 @@ def table_normalize_gender(df: pd.DataFrame) -> None:
 def transform() -> bool:
     """Transform raw healthcare patient table data and load into cleaned Postgres table."""
     try:
-        # Load raw table data
         engine = connect()
         df = pd.read_sql(sql="SELECT * FROM patient_raw;", con=engine)
         table_to_lower(df)
         table_strip_whitespace(df)
         table_normalize_gender(df)
-        print(df)
-        # TODO: write and call functions for data transformations
+        df.to_sql(name="patients_cleaned", con=engine, if_exists="replace")
     except Exception as e:
         print(e)
         return False
 
     return True
-
-
-transform()
