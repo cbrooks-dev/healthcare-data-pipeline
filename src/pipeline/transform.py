@@ -34,7 +34,7 @@ def transform() -> bool:
         table_to_lower(df)
         table_strip_whitespace(df)
         table_normalize_gender(df)
-        df.to_sql(name="patients_cleaned", con=engine, if_exists="replace")
+        df.to_sql(name="patient_cleaned", con=engine, if_exists="replace")
     except Exception as e:
         print(e)
         return False
